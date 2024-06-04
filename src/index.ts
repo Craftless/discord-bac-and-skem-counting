@@ -15,17 +15,20 @@ const client = new Client({
 });
 
 client.on("messageCreate", async (msg) => {
-  if (msg.content.includes("RUINED")) {
-    console.log(msg.content);
-    console.log("Color", msg.embeds[0].color);
-    console.log(msg.author.id);
-  }
   const msgs = Array.from(
     (await msg.channel.messages.fetch({ limit: 2 })).values()
   );
   if (msgs.length < 2) return;
+  if (
+    msg.content === "1** **" &&
+    msgs[1].author.id === client.application?.id
+  ) {
+    msg.react("✅");
+    return;
+  }
   if (!msgs.every((m) => m.content.match(/^([0-9]+?(\*\* \*\*)*)$/g))) return;
   if (msg.content.includes("** **")) {
+    console.log(msgs[1].content);
     if (
       parseInt(msgs[1].content) + 1 ===
       parseInt(msgs[0].content.split("*")[0])
