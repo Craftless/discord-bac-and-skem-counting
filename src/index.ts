@@ -28,11 +28,10 @@ client.on("messageCreate", async (msg) => {
   }
   if (!msgs.every((m) => m.content.match(/^([0-9]+?(\*\* \*\*)*)$/g))) return;
   if (msg.content.includes("** **")) {
-    console.log(msgs[1].content);
-    if (
-      parseInt(msgs[1].content) + 1 ===
-      parseInt(msgs[0].content.split("*")[0])
-    ) {
+    console.log(msgs[1].author.id, msgs[0].author.id);
+    const prev = parseInt(msgs[1].content.split("*")[0]);
+    const cur = parseInt(msgs[0].content.split("*")[0]);
+    if (prev + 1 === cur && msgs[1].author.id !== msgs[0].author.id) {
       msg.react("✅");
     } else {
       msg.react("❌");
@@ -46,7 +45,7 @@ client.on("messageCreate", async (msg) => {
         )
         .setColor(9004502);
       msg.channel.send({
-        content: `<@${msg.author.id}> RUINED IT AT **${msgs[1].content}**!! Next number is **1**. **${error}**`,
+        content: `<@${msg.author.id}> RUINED IT AT **${prev}**!! Next number is **1**. **${error}**`,
         embeds: [embed],
       });
     }
