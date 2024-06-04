@@ -1,5 +1,7 @@
 import { Client, EmbedBuilder, IntentsBitField } from "discord.js";
+import { commands } from "./commands";
 import { config } from "./config";
+import { deployCommands } from "./register-commands";
 
 const client = new Client({
   intents: [
@@ -32,12 +34,12 @@ client.on("messageCreate", async (msg) => {
     } else {
       msg.react("❌");
       const error =
-        parseInt(msgs[1].content) === parseInt(msgs[0].content.split("*")[0])
+        msgs[1].author.id === msgs[0].author.id
           ? "You can't count two numbers in a row."
           : "Wrong number.";
       const embed = new EmbedBuilder()
         .setDescription(
-          "Vote [here](https://www.craftless.live) to earn saves so you can continue counting next time. See `c!help."
+          "Vote [here](https://www.craftless.live) to earn saves so you can continue counting next time. See `c!help`."
         )
         .setColor(9004502);
       msg.channel.send({
@@ -53,6 +55,21 @@ client.on("ready", (c) => {
   client.user?.setActivity({
     name: "c!help",
   });
+  client.user?.setStatus("invisible");
+});
+
+client.on("guildCreate", async (guild) => {
+  await deployCommands({ guildId: guild.id });
+});
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) {
+    return;
+  }
+  const { commandName } = interaction;
+  if (commands[commandName as keyof typeof commands]) {
+    commands[commandName as keyof typeof commands].execute(interaction);
+  }
 });
 
 client.login(config.DISCORD_TOKEN);
