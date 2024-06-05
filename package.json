@@ -14,7 +14,8 @@
   "description": "",
   "dependencies": {
     "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.1"
   },
   "devDependencies": {
     "tsup": "^8.1.0",
