@@ -1,0 +1,9 @@
+{
+  "task": "has made the advancement",
+  "goal": "has reached the goal",
+  "challenge": "has completed the challenge",
+  "super_challenge": "has completed the super challenge",
+  "hidden": "has found the hidden advancement",
+  "milestone": "has completed every advancement",
+  "advancement_legend": "no way anyone is going to get this"
+}

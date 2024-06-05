@@ -3,7 +3,6 @@ import { Client, CommandInteraction } from "discord.js";
 module.exports = {
   name: "ping",
   description: "Pong!",
-  devOnly: true,
   // testOnly: Boolean,
   // options: Object[],
   // deleted: Boolean, soft delete

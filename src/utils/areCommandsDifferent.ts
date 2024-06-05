@@ -39,6 +39,7 @@ export default (existingCommand: ApplicationCommand, localCommand: Command) => {
       }
 
       if (
+        localOption.autocomplete !== existingOption.autocomplete ||
         localOption.description !== existingOption.description ||
         localOption.type !== existingOption.type || // @ts-ignore
         (localOption.required || false) !== existingOption.required || // @ts-ignore

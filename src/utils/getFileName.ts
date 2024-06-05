@@ -1,1 +1,2 @@
-export default (path: string) => path.replace(/\\/g, "/").split("/").pop()!;
+export default (path: string) =>
+  path.replace(/\\/g, "/").split("/").pop()!.split(".")[0];

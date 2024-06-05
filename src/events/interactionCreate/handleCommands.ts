@@ -4,7 +4,7 @@ import {
   Interaction,
   PermissionsBitField,
 } from "discord.js";
-import { devs, testServer } from "../../../config.json";
+import { devs, testServers } from "../../../config.json";
 import getLocalCommands from "../../utils/getLocalCommands";
 
 module.exports = async (
@@ -29,7 +29,7 @@ module.exports = async (
       }
     }
     if (commandObject.testOnly) {
-      if (interaction.guild?.id !== testServer) {
+      if (!testServers.includes(interaction.guild?.id || "")) {
         interaction.reply({
           content: "This command cannot be run here",
           ephemeral: true,

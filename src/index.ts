@@ -1,6 +1,7 @@
 import { Client, IntentsBitField } from "discord.js";
 import { config } from "./config";
 import eventHandler from "./handlers/eventHandler";
+import { loadAdvancements } from "./utils/advancements/advancementsUtil";
 
 const client = new Client({
   intents: [
@@ -18,6 +19,7 @@ const client = new Client({
     // await connect(process.env.MONGO_URI!);
     // console.log("Connected to db");
     eventHandler(client);
+    loadAdvancements();
     client.login(config.DISCORD_TOKEN);
   } catch (error) {
     console.log(error);
