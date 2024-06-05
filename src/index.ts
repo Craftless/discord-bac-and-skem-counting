@@ -1,7 +1,6 @@
 import { Client, EmbedBuilder, IntentsBitField } from "discord.js";
-import { commands } from "./commands";
 import { config } from "./config";
-import { deployCommands } from "./register-commands";
+import eventHandler from "./handlers/eventHandler";
 
 const client = new Client({
   intents: [
@@ -13,6 +12,8 @@ const client = new Client({
     IntentsBitField.Flags.DirectMessages,
   ],
 });
+
+eventHandler(client);
 
 client.on("messageCreate", async (msg) => {
   const msgs = Array.from(
@@ -52,26 +53,14 @@ client.on("messageCreate", async (msg) => {
   }
 });
 
-client.on("ready", (c) => {
-  console.log("Ready");
-  client.user?.setActivity({
-    name: "c!help",
-  });
-  client.user?.setStatus("invisible");
-});
-
-client.on("guildCreate", async (guild) => {
-  await deployCommands({ guildId: guild.id });
-});
-
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) {
-    return;
-  }
-  const { commandName } = interaction;
-  if (commands[commandName as keyof typeof commands]) {
-    commands[commandName as keyof typeof commands].execute(interaction);
-  }
-});
+// client.on("interactionCreate", async (interaction) => {
+//   if (!interaction.isCommand()) {
+//     return;
+//   }
+//   const { commandName } = interaction;
+//   if (commands[commandName as keyof typeof commands]) {
+//     commands[commandName as keyof typeof commands].execute(interaction);
+//   }
+// });
 
 client.login(config.DISCORD_TOKEN);
