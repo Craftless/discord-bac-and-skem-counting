@@ -25,11 +25,7 @@ module.exports = async (client: Client) => {
             console.log(`Deleted command ${name}.`);
             continue;
           }
-          if (
-            areCommandsDifferent(existingCommand, localCommand) ||
-            localCommand.name === "advancement_info" ||
-            localCommand.name === "setup_advancements"
-          ) {
+          if (areCommandsDifferent(existingCommand, localCommand)) {
             await applicationCommands.edit(existingCommand.id, {
               description,
               options,
