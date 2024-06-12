@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import { devs, testServers } from "../../../config.json";
 import getLocalCommands from "../../utils/getLocalCommands";
+import { crash } from "../../utils/skem/skemStore";
 
 module.exports = async (
   client: Client,
@@ -19,6 +20,13 @@ module.exports = async (
       (cmd) => cmd.name === interaction.commandName
     );
     if (!commandObject) return;
+    if (!interaction.command) return;
+    if (
+      interaction.command.name !== "uncrash" &&
+      crash.has(interaction.user.id)
+    ) {
+      return;
+    }
     if (commandObject.devOnly) {
       if (!devs.includes(interaction.member.user.id)) {
         interaction.reply({
