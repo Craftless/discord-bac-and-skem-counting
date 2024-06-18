@@ -1,4 +1,5 @@
 import { Client, EmbedBuilder, Message } from "discord.js";
+import getNumber from "../../utils/getNumber";
 import { crash, next } from "../../utils/skem/skemStore";
 
 module.exports = async (client: Client, msg: Message) => {
@@ -12,7 +13,7 @@ module.exports = async (client: Client, msg: Message) => {
     if (nxt === "tick") {
       msg.react("✅");
     } else {
-      cross(msg, parseInt(msgs[1].content.split("*")[0]), nxt);
+      cross(msg, getNumber(msgs[1]), nxt);
     }
     next.delete(msg.author.id);
     return;
@@ -26,8 +27,8 @@ module.exports = async (client: Client, msg: Message) => {
   }
   if (!msgs.every((m) => m.content.match(/^([0-9]+?(\*\* \*\*)*)$/g))) return;
   if (msg.content.includes("** **")) {
-    const prev = parseInt(msgs[1].content.split("*")[0]);
-    const cur = parseInt(msgs[0].content.split("*")[0]);
+    const prev = getNumber(msgs[1]);
+    const cur = getNumber(msgs[0]);
     if (prev + 1 === cur && msgs[1].author.id !== msgs[0].author.id) {
       msg.react("✅");
     } else {
