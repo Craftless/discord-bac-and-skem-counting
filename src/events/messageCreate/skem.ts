@@ -10,8 +10,8 @@ module.exports = async (client: Client, msg: Message) => {
   if (msgs.length < 2) return;
   const nxt = next.get(msg.author.id);
   if (nxt) {
-    if (nxt === "tick") {
-      msg.react("✅");
+    if (nxt === "tick" || nxt === "highest") {
+      tick(msgs, nxt === "highest");
     } else {
       cross(msg, getNumber(msgs[1]), nxt);
     }
@@ -22,7 +22,7 @@ module.exports = async (client: Client, msg: Message) => {
     msg.content === "1** **" &&
     msgs[1].author.id === client.application?.id
   ) {
-    msg.react("✅");
+    tick(msgs);
     return;
   }
   if (!msgs.every((m) => m.content.match(/^([0-9]+?(\*\* \*\*)*)$/g))) return;
@@ -30,7 +30,7 @@ module.exports = async (client: Client, msg: Message) => {
     const prev = getNumber(msgs[1]);
     const cur = getNumber(msgs[0]);
     if (prev + 1 === cur && msgs[1].author.id !== msgs[0].author.id) {
-      msg.react("✅");
+      tick(msgs);
     } else {
       msg.react("❌");
       cross(
@@ -41,6 +41,12 @@ module.exports = async (client: Client, msg: Message) => {
     }
   }
 };
+
+function tick(msgs: Message[], inHighest?: boolean) {
+  const highest = // @ts-ignore
+    inHighest ?? msgs[1].reactions.cache.some((rxn) => rxn == "☑️");
+  msgs[0].react(highest ? "☑️" : "✅");
+}
 
 function cross(msg: Message, prev: number, reason: "wrong" | "twice") {
   msg.react("❌");

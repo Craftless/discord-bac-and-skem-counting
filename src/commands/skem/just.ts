@@ -20,6 +20,10 @@ module.exports = {
           value: "tick",
         },
         {
+          name: "highest tick",
+          value: "highest",
+        },
+        {
           name: "wrong number",
           value: "wrong",
         },
@@ -35,7 +39,8 @@ module.exports = {
       const choice = interaction.options.get("choice")?.value as
         | "tick"
         | "wrong"
-        | "twice";
+        | "twice"
+        | "highest";
       next.set(interaction.user.id, choice);
       await interaction.reply({
         content: `Set next response to \`\`\`${choice}\`\`\``,
